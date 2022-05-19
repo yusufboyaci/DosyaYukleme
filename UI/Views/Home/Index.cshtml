@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-title">
+                File upload by AJAX
+            </div>
+            <div class="card-body">
+                <div id="upload-image">
+                    <input type="file" name="file" id="file" />
+                    <button id="btnUpload" class="btn btn-primary">
+                        Upload File
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var webUrl = '@ViewBag.Url'
+    $('#btnUpload').click(function () {
+        uploadFile();
+    });
+    function uploadFile() {
+        // var files = $('#file').files;
+        var files = document.getElementById('file').files;
+        if (window.FormData !== undefined) {
+            var data = new FormData();
+            for (var x = 0; x < files.length; x++) {
+                data.append('file' + x, files[x]);
+            }
+            $.ajax({
+                type: 'POST',
+                url: webUrl + '/api/Dosya/UploadFile',
+                contentType: false,
+                processData: false,
+                data: data,
+                success: function () {
+                    alert('Yükleme başarılı!!!');
+                },
+                error: function () {
+                    alert('HATA');
+                }
+            })
+        }
+    };
+</script>
